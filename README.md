@@ -2,30 +2,6 @@
 
 A hands-on lab for learning GitHub Actions by testing a small data-science module two ways: **pytest** and **unittest**. Instead of a calculator, this repo works on a **fake bike-share rides dataset**: it generates the data, cleans out bad rows, computes distances, speeds and fares, and summarizes rides per station. Three workflows run the tests and a scheduled data-quality report.
 
-## Project structure
-
-```
-ride-analytics-ci/
-├── .github/workflows/
-│   ├── pytest_action.yml      # pytest on Python 3.10–3.12 + coverage + artifacts
-│   ├── unittest_action.yml    # built-in unittest, zero installs
-│   └── data_quality.yml       # nightly (cron) data-quality report
-├── data/
-│   ├── __init__.py
-│   ├── generate_data.py       # fake dataset generator (seeded, reproducible)
-│   └── rides.csv              # 500 sample rows (≈4% deliberately dirty)
-├── src/
-│   ├── __init__.py
-│   └── ride_metrics.py        # functions under test
-├── tests/
-│   ├── __init__.py
-│   ├── test_pytest.py         # fixtures, parametrize, tmp_path
-│   └── test_unittest.py       # TestCase classes, subTest, setUpClass
-├── pytest.ini
-├── requirements.txt
-└── .gitignore
-```
-
 ## The fake dataset
 
 `data/generate_data.py` builds rides between six made-up stations with rush-hour-heavy start times. Each row has: `ride_id, start_time, end_time, start_station, end_station, start_lat, start_lon, end_lat, end_lon, rider_type, bike_type`.
@@ -130,20 +106,3 @@ Add these to the top of this README (replace `<your-username>`):
 ```
 
 ---
-
-## pytest vs. unittest in this repo
-
-| | `test_pytest.py` | `test_unittest.py` |
-|---|---|---|
-| Style | Plain functions + `assert` | `unittest.TestCase` classes |
-| Shared setup | `@pytest.fixture` (function and module scope) | `setUp` / `setUpClass` / `tearDownClass` |
-| Many inputs | `@pytest.mark.parametrize` | `self.subTest(...)` |
-| Exceptions | `pytest.raises(ValueError)` | `self.assertRaises(ValueError)` |
-| Floats | `pytest.approx` | `assertAlmostEqual` |
-| Temp files | `tmp_path_factory` | `tempfile.TemporaryDirectory` |
-| Install | `pip install pytest` | Built in |
-
-## Ideas to extend it
-- Add a `lint` job with `ruff` or `flake8` and make the test jobs depend on it with `needs: lint`.
-- Add a test that fails when coverage drops below a threshold (`--cov-fail-under=90`).
-- Train a small model (e.g. predict ride duration) and add a workflow that fails if accuracy regresses.
