@@ -1,4 +1,4 @@
-# Ride Analytics CI — GitHub Actions Lab
+# Ride Analytics CI — GitHub Actions (MLOPS) Lab
 
 A hands-on lab for learning GitHub Actions by testing a small data-science module two ways: **pytest** and **unittest**. Instead of a calculator, this repo works on a **fake bike-share rides dataset**: it generates the data, cleans out bad rows, computes distances, speeds and fares, and summarizes rides per station. Three workflows run the tests and a scheduled data-quality report.
 
